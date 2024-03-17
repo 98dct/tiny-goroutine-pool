@@ -15,7 +15,7 @@ func catchPanic(p any) {
 }
 func job() {
 	cnt.Add(1)
-	defer cnt.Add(-1)
+	//defer cnt.Add(-1)
 	v := rand.Int63() % 10
 	if v == 0 {
 		panic("panic")
@@ -33,16 +33,16 @@ func TestGoPool(t *testing.T) {
 		PanicHandler(catchPanic),
 	)
 	time.Sleep(100 * time.Millisecond)
-	fmt.Println("queue free:", p.QueueFree(), "workers:", p.Workers())
+	fmt.Println("queue free 1:", p.QueueFree(), "workers:", p.Workers())
 	for i := 0; i < 2049; i++ {
 		if p.QueueFree() > 0 {
 			p.Go(job)
 		}
 	}
 
-	fmt.Println("queue free:", p.QueueFree(), "workers:", p.Workers())
+	fmt.Println("queue free 2:", p.QueueFree(), "workers:", p.Workers())
 	time.Sleep(1000 * time.Millisecond)
-	fmt.Println("cnt:", cnt.Load(), "queue free:", p.QueueFree(), "workers:", p.Workers())
+	fmt.Println("cnt:", cnt.Load(), "queue free 3:", p.QueueFree(), "workers:", p.Workers())
 	time.Sleep(600 * time.Millisecond)
-	fmt.Println("cnt:", cnt.Load(), "queue free:", p.QueueFree(), "workers:", p.Workers())
+	fmt.Println("cnt:", cnt.Load(), "queue free 4:", p.QueueFree(), "workers:", p.Workers())
 }
